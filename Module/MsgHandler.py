@@ -1,14 +1,7 @@
 from AMQInterface.AMQInterface import AMQInterface
 import stomp
-import sys
-import MsgListener
-
-class MyListener(stomp.ConnectionListener):
-    def on_error(self, frame):
-        print('received an error "%s"' % frame.body)
-
-    def on_message(self, frame):
-        print('received a message "%s"' % frame.body)
+from .MsgListener import MsgListener
+import time
 
 class MsgHandler(AMQInterface):
     def __init__(self, port, ipaddr, passwd, user):
@@ -27,9 +20,10 @@ class MsgHandler(AMQInterface):
 
     def sendPacket(self, msg):
         conn = self.connect()
-        conn.send(body=msg.join(sys.argv[1:]), destination='/queue/test')
+        conn.send(body=msg, destination='/queue/test')
+        conn.disconnect()
 
     def getPacket(self):
         conn = self.connect()
         conn.subscribe(destination='/queue/test', id=1, ack='auto')
-
+        conn.disconnect()

@@ -1,6 +1,7 @@
 from Module.MsgHandler import MsgHandler
 import argparse
-import sys
+import time
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -18,6 +19,7 @@ def main():
     print("port?", args.port)
     amq = MsgHandler(port, ipaddr, user, passwd)
     amq.sendPacket("hello world!")
+    time.sleep(3)
     amq.getPacket()
 
 # Press the green button in the gutter to run the script.
