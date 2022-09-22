@@ -11,4 +11,8 @@ class AMQInterface(ABC):
     def getPacket(self):
         pass
 
+    @abstractmethod
+    def is_connected(self):
+        pass
+
     

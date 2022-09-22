@@ -1,9 +1,7 @@
-import logger
-import json
 import stomp
+import logger
 
-
-class MsgListener(stomp.ConnectionListener):
+class TestMsgListener(stomp.ConnectionListener):
     def __init__(self):
         # to keep the count of messages received
         self.msg_received = 0

@@ -10,20 +10,21 @@ class MsgHandler(AMQInterface):
         self._ipaddr = ipaddr
         self._passwd = passwd
         self._user = user
+        self._conn = None
 
     def connect(self):
-        con = stomp.Connection([(self._ipaddr, self._port)])
+        self._conn = stomp.Connection([(self._ipaddr, self._port)])
         listener = MsgListener()
-        con.set_listener('name_of_listener', listener)
-        con.connect(self._user, self._passwd, wait=True)
-        return con
+        self._conn.set_listener('name_of_listener', listener)
+        self._conn.connect(self._user, self._passwd, wait=True)
+
+    def is_connected(self):
+        self._conn.is_connected()
 
     def sendPacket(self, msg):
         conn = self.connect()
         conn.send(body=msg, destination='/queue/test')
-        conn.disconnect()
 
     def getPacket(self):
         conn = self.connect()
         conn.subscribe(destination='/queue/test', id=1, ack='auto')
-        conn.disconnect()
